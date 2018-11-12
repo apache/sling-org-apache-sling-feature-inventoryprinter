@@ -21,12 +21,12 @@
         <relativePath />
     </parent>
 
-    <artifactId>org.apache.sling.feature.inventoryservice</artifactId>
+    <artifactId>org.apache.sling.feature.inventoryprinter</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
-    <name>Apache Sling Feature Inventory Service</name>
+    <name>Apache Sling Feature Inventory Printer</name>
     <description>
-        An inventory service for the feature model
+        An inventory printer service for the feature model
     </description>
 
     <properties>
