@@ -31,8 +31,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Component(
-property = {InventoryPrinter.NAME + "=launch_features",
-        InventoryPrinter.TITLE + "=Launch Features",
+property = {InventoryPrinter.NAME + "=launch_feature",
+        InventoryPrinter.TITLE + "=Launch Feature",
         InventoryPrinter.FORMAT + "=JSON"})
 public class FeaturesInventoryPrinter implements InventoryPrinter
 {
