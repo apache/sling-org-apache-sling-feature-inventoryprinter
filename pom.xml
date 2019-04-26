@@ -22,7 +22,7 @@
     </parent>
 
     <artifactId>org.apache.sling.feature.inventoryprinter</artifactId>
-    <version>1.0.0</version>
+    <version>0.0.2-SNAPSHOT</version>
 
     <name>Apache Sling Feature Inventory Printer</name>
     <description>
@@ -32,6 +32,13 @@
     <properties>
         <sling.java.version>7</sling.java.version>
     </properties>
+
+    <scm>
+        <connection>scm:git:https://gitbox.apache.org/repos/asf/sling-org-apache-sling-feature-inventoryprinter.git</connection>
+        <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/sling-org-apache-sling-feature-inventoryprinter.git</developerConnection>
+        <url>https://gitbox.apache.org/repos/asf?p=sling-org-apache-sling-feature-inventoryprinter.git</url>
+        <tag>HEAD</tag>
+    </scm>
 
     <build>
         <plugins>
@@ -70,8 +77,4 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
-
-  <scm>
-    <tag>org.apache.sling.feature.inventoryprinter-1.0.0</tag>
-  </scm>
 </project>
