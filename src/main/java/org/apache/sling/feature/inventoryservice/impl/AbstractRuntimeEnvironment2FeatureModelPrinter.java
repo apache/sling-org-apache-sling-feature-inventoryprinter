@@ -27,12 +27,10 @@ import org.apache.sling.feature.Feature;
 import org.apache.sling.feature.r2f.ConversionRequest;
 import org.apache.sling.feature.r2f.DefaultConversionRequest;
 import org.apache.sling.feature.r2f.RuntimeEnvironment2FeatureModel;
-import org.osgi.service.component.annotations.Reference;
 
 abstract class AbstractRuntimeEnvironment2FeatureModelPrinter extends AbstractFeatureInventoryPrinter {
 
-    @Reference
-    RuntimeEnvironment2FeatureModel generator;
+    private RuntimeEnvironment2FeatureModel generator;
 
     @Override
     protected void onFeature(String featureLocation, BufferedReader reader, PrintWriter printWriter) throws Exception {

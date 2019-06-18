@@ -25,7 +25,11 @@ import org.apache.felix.inventory.InventoryPrinter;
 import org.apache.sling.feature.ArtifactId;
 import org.apache.sling.feature.Feature;
 import org.apache.sling.feature.diff.DefaultDiffRequest;
+import org.apache.sling.feature.r2f.RuntimeEnvironment2FeatureModel;
+import org.osgi.framework.BundleContext;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 @Component(
     service = InventoryPrinter.class,
@@ -33,9 +37,17 @@ import org.osgi.service.component.annotations.Component;
         NAME + "=r2f_base2runtime",
         TITLE + "=Apache Sling Runtime Environment to Feature Model converter - Base 2 Runtime diff Generator",
         FORMAT + "=JSON"
+    },
+    reference = {
+        @Reference(field = "generator", name = "generator", service = RuntimeEnvironment2FeatureModel.class)
     }
 )
 public class BaseFeature2CurrentRuntimePrinter extends AbstractRuntimeEnvironment2FeatureModelPrinter {
+
+    @Activate
+    public void start(BundleContext bundleContext) {
+        this.bundleContext = bundleContext;
+    }
 
     @Override
     protected Feature compute(Feature previousFeature, Feature currentFeature) {

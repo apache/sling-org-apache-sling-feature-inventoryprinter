@@ -26,7 +26,11 @@ import java.io.BufferedReader;
 import java.io.PrintWriter;
 
 import org.apache.felix.inventory.InventoryPrinter;
+import org.apache.sling.feature.r2f.RuntimeEnvironment2FeatureModel;
+import org.osgi.framework.BundleContext;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 @Component(
     service = InventoryPrinter.class,
@@ -34,9 +38,17 @@ import org.osgi.service.component.annotations.Component;
         NAME + "=launch_feature",
         TITLE + "=Launch Feature",
         FORMAT + "=JSON"
+    },
+    reference = {
+        @Reference(field = "generator", name = "generator", service = RuntimeEnvironment2FeatureModel.class)
     }
 )
 public class FeaturesInventoryPrinter extends AbstractFeatureInventoryPrinter {
+
+    @Activate
+    public void start(BundleContext bundleContext) {
+        this.bundleContext = bundleContext;
+    }
 
     @Override
     protected void onFeature(String featureLocation, BufferedReader reader, PrintWriter printWriter) throws Exception {

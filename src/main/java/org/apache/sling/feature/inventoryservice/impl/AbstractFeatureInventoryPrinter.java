@@ -30,14 +30,12 @@ import java.nio.file.Paths;
 import org.apache.felix.inventory.Format;
 import org.apache.felix.inventory.InventoryPrinter;
 import org.osgi.framework.BundleContext;
-import org.osgi.service.component.annotations.Activate;
 
 abstract class AbstractFeatureInventoryPrinter implements InventoryPrinter {
 
     private static final String SLING_FEATURE_PROPERTY_NAME = "sling.feature";
 
-    @Activate
-    BundleContext bundleContext;
+    protected BundleContext bundleContext;
 
     @Override
     public final void print(PrintWriter printWriter, Format format, boolean isZip) {
