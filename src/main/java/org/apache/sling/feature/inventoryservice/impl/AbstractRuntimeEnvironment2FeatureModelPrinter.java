@@ -30,7 +30,7 @@ import org.apache.sling.feature.r2f.RuntimeEnvironment2FeatureModel;
 
 abstract class AbstractRuntimeEnvironment2FeatureModelPrinter extends AbstractFeatureInventoryPrinter {
 
-    private RuntimeEnvironment2FeatureModel generator;
+    protected RuntimeEnvironment2FeatureModel generator;
 
     @Override
     protected void onFeature(String featureLocation, BufferedReader reader, PrintWriter printWriter) throws Exception {
