@@ -54,7 +54,7 @@ public class BaseFeature2CurrentRuntimePrinter extends AbstractRuntimeEnvironmen
         Feature featureDiff = compareFeatures(new DefaultDiffRequest()
                                               .setPrevious(previousFeature)
                                               .setCurrent(currentFeature)
-                                              .addIncludeComparator("artifacts")
+                                              .addIncludeComparator("bundles")
                                               .addIncludeComparator("configurations")
                                               .setResultId(new ArtifactId(currentFeature.getId().getGroupId(),
                                                            currentFeature.getId().getArtifactId(), 
