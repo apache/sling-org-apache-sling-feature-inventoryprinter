@@ -18,17 +18,19 @@
  */
 package org.apache.sling.feature.inventoryservice.impl;
 
+import java.io.BufferedReader;
+import java.io.PrintWriter;
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import org.apache.felix.inventory.Format;
 import org.apache.felix.inventory.InventoryPrinter;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-
-import java.io.PrintWriter;
-import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 @Component(
 property = {InventoryPrinter.NAME + "=launch_feature",
@@ -43,8 +45,12 @@ public class FeaturesInventoryPrinter implements InventoryPrinter
     public void print(PrintWriter printWriter, Format format, boolean isZip) {
         try {
             Path path = Paths.get(new URI(bc.getProperty("sling.feature")));
-            byte[] bytes = Files.readAllBytes(path);
-            printWriter.print(new String(bytes));
+            try (BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
+                String line = null;
+                while ((line = reader.readLine()) != null) {
+                    printWriter.println(line);
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace(printWriter);
         }
