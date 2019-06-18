@@ -20,10 +20,12 @@ import static org.apache.felix.inventory.InventoryPrinter.FORMAT;
 import static org.apache.felix.inventory.InventoryPrinter.NAME;
 import static org.apache.felix.inventory.InventoryPrinter.TITLE;
 
+import org.apache.felix.inventory.InventoryPrinter;
 import org.apache.sling.feature.Feature;
 import org.osgi.service.component.annotations.Component;
 
 @Component(
+    service = InventoryPrinter.class,
     property = {
         NAME + "=r2f_runtime",
         TITLE + "=Apache Sling Runtime Environment to Feature Model converter - Runtime Generator",

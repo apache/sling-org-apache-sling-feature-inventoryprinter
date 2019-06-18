@@ -25,9 +25,11 @@ import static org.apache.felix.inventory.InventoryPrinter.TITLE;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 
+import org.apache.felix.inventory.InventoryPrinter;
 import org.osgi.service.component.annotations.Component;
 
 @Component(
+    service = InventoryPrinter.class,
     property = {
         NAME + "=launch_feature",
         TITLE + "=Launch Feature",

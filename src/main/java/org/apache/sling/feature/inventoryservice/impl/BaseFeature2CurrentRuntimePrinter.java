@@ -21,12 +21,14 @@ import static org.apache.felix.inventory.InventoryPrinter.NAME;
 import static org.apache.felix.inventory.InventoryPrinter.TITLE;
 import static org.apache.sling.feature.diff.FeatureDiff.compareFeatures;
 
+import org.apache.felix.inventory.InventoryPrinter;
 import org.apache.sling.feature.ArtifactId;
 import org.apache.sling.feature.Feature;
 import org.apache.sling.feature.diff.DefaultDiffRequest;
 import org.osgi.service.component.annotations.Component;
 
 @Component(
+    service = InventoryPrinter.class,
     property = {
         NAME + "=r2f_base2runtime",
         TITLE + "=Apache Sling Runtime Environment to Feature Model converter - Base 2 Runtime diff Generator",
