@@ -16,54 +16,27 @@
  */
 package org.apache.sling.feature.inventoryservice.impl;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static java.nio.file.Files.newBufferedReader;
 import static org.apache.sling.feature.io.json.FeatureJSONReader.read;
 import static org.apache.sling.feature.io.json.FeatureJSONWriter.write;
 
-import java.io.IOException;
+import java.io.BufferedReader;
 import java.io.PrintWriter;
-import java.io.Reader;
-import java.net.URI;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
-import org.apache.felix.inventory.Format;
-import org.apache.felix.inventory.InventoryPrinter;
 import org.apache.sling.feature.ArtifactId;
 import org.apache.sling.feature.Feature;
 import org.apache.sling.feature.r2f.ConversionRequest;
 import org.apache.sling.feature.r2f.DefaultConversionRequest;
 import org.apache.sling.feature.r2f.RuntimeEnvironment2FeatureModel;
-import org.osgi.framework.BundleContext;
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Reference;
 
-abstract class AbstractRuntimeEnvironment2FeatureModelPrinter implements InventoryPrinter {
-
-    private static final String SLING_FEATURE_PROPERTY_NAME = "sling.feature";
+abstract class AbstractRuntimeEnvironment2FeatureModelPrinter extends AbstractFeatureInventoryPrinter {
 
     @Reference
     RuntimeEnvironment2FeatureModel generator;
 
-    @Activate
-    BundleContext bundleContext;
-
     @Override
-    public final void print(PrintWriter printWriter, Format format, boolean isZip) {
-        String previousFeatureLocation = bundleContext.getProperty(SLING_FEATURE_PROPERTY_NAME);
-        URI previousFeatureURI = URI.create(previousFeatureLocation);
-        Path previousFeaturePath = Paths.get(previousFeatureURI);
-        Feature previousFeature = null;
-
-        try (Reader reader = newBufferedReader(previousFeaturePath, UTF_8)) {
-            previousFeature = read(reader, previousFeatureLocation);
-        } catch (IOException e) {
-            throw new RuntimeException("An error occurred while reading 'sling.feature' framework-property "
-                    + previousFeatureLocation
-                    + ", see causing error(s):",
-                    e);
-        }
+    protected void onFeature(String featureLocation, BufferedReader reader, PrintWriter printWriter) throws Exception {
+        Feature previousFeature = read(reader, featureLocation);
 
         String groupId = previousFeature.getId().getGroupId();
         String artifactId = previousFeature.getId().getArtifactId();
@@ -77,15 +50,7 @@ abstract class AbstractRuntimeEnvironment2FeatureModelPrinter implements Invento
 
         Feature computedFeature = compute(previousFeature, currentFeature);
 
-        try {
-            write(printWriter, computedFeature);
-        } catch (IOException e) {
-            printWriter.append("An error occured while searlizing ")
-                       .append(computedFeature.toString())
-                       .append(":\n");
-
-            e.printStackTrace(printWriter);
-        }
+        write(printWriter, computedFeature);
     }
 
     protected abstract Feature compute(Feature previousFeature, Feature currentFeature);

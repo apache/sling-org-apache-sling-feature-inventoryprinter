@@ -18,36 +18,30 @@
  */
 package org.apache.sling.feature.inventoryservice.impl;
 
-import org.apache.felix.inventory.Format;
-import org.apache.felix.inventory.InventoryPrinter;
-import org.osgi.framework.BundleContext;
-import org.osgi.service.component.annotations.Activate;
+import static org.apache.felix.inventory.InventoryPrinter.FORMAT;
+import static org.apache.felix.inventory.InventoryPrinter.NAME;
+import static org.apache.felix.inventory.InventoryPrinter.TITLE;
+
+import java.io.BufferedReader;
+import java.io.PrintWriter;
+
 import org.osgi.service.component.annotations.Component;
 
-import java.io.PrintWriter;
-import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 @Component(
-property = {InventoryPrinter.NAME + "=launch_feature",
-        InventoryPrinter.TITLE + "=Launch Feature",
-        InventoryPrinter.FORMAT + "=JSON"})
-public class FeaturesInventoryPrinter implements InventoryPrinter
-{
-    @Activate
-    BundleContext bc;
+    property = {
+        NAME + "=launch_feature",
+        TITLE + "=Launch Feature",
+        FORMAT + "=JSON"
+    }
+)
+public class FeaturesInventoryPrinter extends AbstractFeatureInventoryPrinter {
 
     @Override
-    public void print(PrintWriter printWriter, Format format, boolean isZip) {
-        try {
-            Path path = Paths.get(new URI(bc.getProperty("sling.feature")));
-            byte[] bytes = Files.readAllBytes(path);
-            printWriter.print(new String(bytes));
-        } catch (Exception e) {
-            e.printStackTrace(printWriter);
+    protected void onFeature(String featureLocation, BufferedReader reader, PrintWriter printWriter) throws Exception {
+        String line = null;
+        while ((line = reader.readLine()) != null) {
+            printWriter.println(line);
         }
-        printWriter.println();
     }
+
 }
