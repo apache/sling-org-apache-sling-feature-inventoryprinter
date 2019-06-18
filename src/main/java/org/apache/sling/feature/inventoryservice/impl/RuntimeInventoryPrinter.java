@@ -19,12 +19,9 @@ package org.apache.sling.feature.inventoryservice.impl;
 import static org.apache.felix.inventory.InventoryPrinter.FORMAT;
 import static org.apache.felix.inventory.InventoryPrinter.NAME;
 import static org.apache.felix.inventory.InventoryPrinter.TITLE;
-import static org.apache.sling.feature.diff.FeatureDiff.compareFeatures;
 
 import org.apache.felix.inventory.InventoryPrinter;
-import org.apache.sling.feature.ArtifactId;
 import org.apache.sling.feature.Feature;
-import org.apache.sling.feature.diff.DefaultDiffRequest;
 import org.apache.sling.feature.r2f.RuntimeEnvironment2FeatureModel;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
@@ -34,15 +31,15 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
     service = InventoryPrinter.class,
     property = {
-        NAME + "=launch2runtime_feature",
-        TITLE + "=Sling launch 2 runtime diff",
+        NAME + "=runtime_feature",
+        TITLE + "=Sling runtime Feature",
         FORMAT + "=JSON"
     },
     reference = {
         @Reference(field = "generator", name = "generator", service = RuntimeEnvironment2FeatureModel.class)
     }
 )
-public class BaseFeature2CurrentRuntimePrinter extends AbstractRuntimeEnvironment2FeatureModelPrinter {
+public final class RuntimeInventoryPrinter extends AbstractRuntimeEnvironment2FeatureModelPrinter {
 
     @Activate
     public void start(BundleContext bundleContext) {
@@ -51,18 +48,7 @@ public class BaseFeature2CurrentRuntimePrinter extends AbstractRuntimeEnvironmen
 
     @Override
     protected Feature compute(Feature previousFeature, Feature currentFeature) {
-        Feature featureDiff = compareFeatures(new DefaultDiffRequest()
-                                              .setPrevious(previousFeature)
-                                              .setCurrent(currentFeature)
-                                              .addIncludeComparator("bundles")
-                                              .addIncludeComparator("configurations")
-                                              .setResultId(new ArtifactId(currentFeature.getId().getGroupId(),
-                                                           currentFeature.getId().getArtifactId(), 
-                                                           currentFeature.getId().getVersion(),
-                                                           currentFeature.getId().getClassifier() + "_updater",
-                                                           currentFeature.getId().getType())));
-
-        return featureDiff;
+        return currentFeature;
     }
 
 }

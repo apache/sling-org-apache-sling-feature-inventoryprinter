@@ -34,23 +34,23 @@ abstract class AbstractRuntimeEnvironment2FeatureModelPrinter extends AbstractFe
 
     @Override
     protected void onFeature(String featureLocation, BufferedReader reader, PrintWriter printWriter) throws Exception {
-        Feature previousFeature = read(reader, featureLocation);
+        Feature launchFeature = read(reader, featureLocation);
 
-        String groupId = previousFeature.getId().getGroupId();
-        String artifactId = previousFeature.getId().getArtifactId();
-        String version = previousFeature.getId().getArtifactId();
-        String classifier = previousFeature.getId().getArtifactId() + "-RUNTIME";
+        String groupId = launchFeature.getId().getGroupId();
+        String artifactId = launchFeature.getId().getArtifactId();
+        String version = launchFeature.getId().getArtifactId();
+        String classifier = launchFeature.getId().getArtifactId() + "-RUNTIME";
 
         ConversionRequest request = new DefaultConversionRequest()
                                     .setBundleContext(bundleContext)
                                     .setResultId(new ArtifactId(groupId, artifactId, version, classifier, null));
-        Feature currentFeature = generator.scanAndAssemble(request);
+        Feature runtimeFeature = generator.scanAndAssemble(request);
 
-        Feature computedFeature = compute(previousFeature, currentFeature);
+        Feature computedFeature = compute(launchFeature, runtimeFeature);
 
         write(printWriter, computedFeature);
     }
 
-    protected abstract Feature compute(Feature previousFeature, Feature currentFeature);
+    protected abstract Feature compute(Feature launchFeature, Feature runtimeFeature);
 
 }

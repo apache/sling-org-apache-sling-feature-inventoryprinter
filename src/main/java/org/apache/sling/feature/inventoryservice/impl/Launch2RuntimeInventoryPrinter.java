@@ -19,9 +19,12 @@ package org.apache.sling.feature.inventoryservice.impl;
 import static org.apache.felix.inventory.InventoryPrinter.FORMAT;
 import static org.apache.felix.inventory.InventoryPrinter.NAME;
 import static org.apache.felix.inventory.InventoryPrinter.TITLE;
+import static org.apache.sling.feature.diff.FeatureDiff.compareFeatures;
 
 import org.apache.felix.inventory.InventoryPrinter;
+import org.apache.sling.feature.ArtifactId;
 import org.apache.sling.feature.Feature;
+import org.apache.sling.feature.diff.DefaultDiffRequest;
 import org.apache.sling.feature.r2f.RuntimeEnvironment2FeatureModel;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
@@ -31,15 +34,15 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
     service = InventoryPrinter.class,
     property = {
-        NAME + "=runtime_feature",
-        TITLE + "=Sling runtime Feature",
+        NAME + "=launch2runtime_feature",
+        TITLE + "=Sling launch 2 runtime diff",
         FORMAT + "=JSON"
     },
     reference = {
         @Reference(field = "generator", name = "generator", service = RuntimeEnvironment2FeatureModel.class)
     }
 )
-public final class RuntimeEnvironment2FeatureModelPrinter extends AbstractRuntimeEnvironment2FeatureModelPrinter {
+public class Launch2RuntimeInventoryPrinter extends AbstractRuntimeEnvironment2FeatureModelPrinter {
 
     @Activate
     public void start(BundleContext bundleContext) {
@@ -47,8 +50,19 @@ public final class RuntimeEnvironment2FeatureModelPrinter extends AbstractRuntim
     }
 
     @Override
-    protected Feature compute(Feature previousFeature, Feature currentFeature) {
-        return currentFeature;
+    protected Feature compute(Feature launchFeature, Feature runtimeFeature) {
+        Feature featureDiff = compareFeatures(new DefaultDiffRequest()
+                                              .setPrevious(launchFeature)
+                                              .setCurrent(runtimeFeature)
+                                              .addIncludeComparator("bundles")
+                                              .addIncludeComparator("configurations")
+                                              .setResultId(new ArtifactId(runtimeFeature.getId().getGroupId(),
+                                                                          runtimeFeature.getId().getArtifactId(), 
+                                                                          runtimeFeature.getId().getVersion(),
+                                                                          runtimeFeature.getId().getClassifier() + "_updater",
+                                                                          runtimeFeature.getId().getType())));
+
+        return featureDiff;
     }
 
 }
