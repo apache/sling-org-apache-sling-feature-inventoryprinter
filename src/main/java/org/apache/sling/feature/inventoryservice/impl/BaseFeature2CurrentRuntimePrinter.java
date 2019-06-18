@@ -34,8 +34,8 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
     service = InventoryPrinter.class,
     property = {
-        NAME + "=r2f_base2runtime",
-        TITLE + "=Sling Runtime Environment to Feature Model converter - Base 2 Runtime diff Generator",
+        NAME + "=launch2runtime_feature",
+        TITLE + "=Sling launch 2 runtime diff",
         FORMAT + "=JSON"
     },
     reference = {
