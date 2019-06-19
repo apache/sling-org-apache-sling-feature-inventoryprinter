@@ -28,8 +28,6 @@ import java.io.PrintWriter;
 import org.apache.felix.inventory.InventoryPrinter;
 import org.apache.sling.feature.Feature;
 import org.apache.sling.feature.r2f.RuntimeEnvironment2FeatureModel;
-import org.osgi.framework.BundleContext;
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -45,11 +43,6 @@ import org.osgi.service.component.annotations.Reference;
     }
 )
 public class FeaturesInventoryPrinter extends AbstractFeatureInventoryPrinter {
-
-    @Activate
-    public void start(BundleContext bundleContext) {
-        this.bundleContext = bundleContext;
-    }
 
     @Override
     protected void onLaunchFeature(Feature launchFeature, PrintWriter printWriter) throws Exception {

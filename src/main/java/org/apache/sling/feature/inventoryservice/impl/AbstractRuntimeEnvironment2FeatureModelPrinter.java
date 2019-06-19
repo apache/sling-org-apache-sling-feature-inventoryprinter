@@ -20,24 +20,13 @@ import static org.apache.sling.feature.io.json.FeatureJSONWriter.write;
 
 import java.io.PrintWriter;
 
-import org.apache.sling.feature.ArtifactId;
 import org.apache.sling.feature.Feature;
-import org.apache.sling.feature.r2f.ConversionRequest;
-import org.apache.sling.feature.r2f.DefaultConversionRequest;
 
 abstract class AbstractRuntimeEnvironment2FeatureModelPrinter extends AbstractFeatureInventoryPrinter {
 
     @Override
     protected void onLaunchFeature(Feature launchFeature, PrintWriter printWriter) throws Exception {
-        String groupId = launchFeature.getId().getGroupId();
-        String artifactId = launchFeature.getId().getArtifactId();
-        String version = launchFeature.getId().getArtifactId();
-        String classifier = launchFeature.getId().getArtifactId() + "-RUNTIME";
-
-        ConversionRequest request = new DefaultConversionRequest()
-                                    .setBundleContext(bundleContext)
-                                    .setResultId(new ArtifactId(groupId, artifactId, version, classifier, null));
-        Feature runtimeFeature = generator.getRuntimeFeature(request);
+        Feature runtimeFeature = generator.getRuntimeFeature();
 
         Feature computedFeature = compute(launchFeature, runtimeFeature);
 

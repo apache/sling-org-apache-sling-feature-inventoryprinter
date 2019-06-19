@@ -24,10 +24,8 @@ import static org.apache.sling.feature.diff.FeatureDiff.compareFeatures;
 import org.apache.felix.inventory.InventoryPrinter;
 import org.apache.sling.feature.ArtifactId;
 import org.apache.sling.feature.Feature;
-import org.apache.sling.feature.diff.DefaultDiffRequest;
+import org.apache.sling.feature.diff.DiffRequest;
 import org.apache.sling.feature.r2f.RuntimeEnvironment2FeatureModel;
-import org.osgi.framework.BundleContext;
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -44,14 +42,9 @@ import org.osgi.service.component.annotations.Reference;
 )
 public class Launch2RuntimeInventoryPrinter extends AbstractRuntimeEnvironment2FeatureModelPrinter {
 
-    @Activate
-    public void start(BundleContext bundleContext) {
-        this.bundleContext = bundleContext;
-    }
-
     @Override
     protected Feature compute(Feature launchFeature, Feature runtimeFeature) {
-        Feature featureDiff = compareFeatures(new DefaultDiffRequest()
+        Feature featureDiff = compareFeatures(new DiffRequest()
                                               .setPrevious(launchFeature)
                                               .setCurrent(runtimeFeature)
                                               .addIncludeComparator("bundles")

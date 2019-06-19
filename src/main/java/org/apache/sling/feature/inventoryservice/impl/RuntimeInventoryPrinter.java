@@ -23,8 +23,6 @@ import static org.apache.felix.inventory.InventoryPrinter.TITLE;
 import org.apache.felix.inventory.InventoryPrinter;
 import org.apache.sling.feature.Feature;
 import org.apache.sling.feature.r2f.RuntimeEnvironment2FeatureModel;
-import org.osgi.framework.BundleContext;
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -40,11 +38,6 @@ import org.osgi.service.component.annotations.Reference;
     }
 )
 public final class RuntimeInventoryPrinter extends AbstractRuntimeEnvironment2FeatureModelPrinter {
-
-    @Activate
-    public void start(BundleContext bundleContext) {
-        this.bundleContext = bundleContext;
-    }
 
     @Override
     protected Feature compute(Feature previousFeature, Feature currentFeature) {

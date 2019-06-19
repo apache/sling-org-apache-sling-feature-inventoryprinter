@@ -24,18 +24,16 @@ import org.apache.felix.inventory.Format;
 import org.apache.felix.inventory.InventoryPrinter;
 import org.apache.sling.feature.Feature;
 import org.apache.sling.feature.r2f.RuntimeEnvironment2FeatureModel;
-import org.osgi.framework.BundleContext;
 
 abstract class AbstractFeatureInventoryPrinter implements InventoryPrinter {
 
-    protected BundleContext bundleContext;
 
     protected RuntimeEnvironment2FeatureModel generator;
 
     @Override
     public final void print(PrintWriter printWriter, Format format, boolean isZip) {
         try {
-            Feature launchFeature = generator.getLaunchFeature(bundleContext);
+            Feature launchFeature = generator.getLaunchFeature();
             onLaunchFeature(launchFeature, printWriter);
         } catch (Throwable t) {
             t.printStackTrace(printWriter);
