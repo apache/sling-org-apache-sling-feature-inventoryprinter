@@ -18,39 +18,31 @@
  */
 package org.apache.sling.feature.inventoryservice.impl;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static java.nio.file.Files.newBufferedReader;
-
-import java.io.BufferedReader;
 import java.io.PrintWriter;
-import java.net.URI;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import org.apache.felix.inventory.Format;
 import org.apache.felix.inventory.InventoryPrinter;
+import org.apache.sling.feature.Feature;
+import org.apache.sling.feature.r2f.RuntimeEnvironment2FeatureModel;
 import org.osgi.framework.BundleContext;
 
 abstract class AbstractFeatureInventoryPrinter implements InventoryPrinter {
 
-    private static final String SLING_FEATURE_PROPERTY_NAME = "sling.feature";
-
     protected BundleContext bundleContext;
+
+    protected RuntimeEnvironment2FeatureModel generator;
 
     @Override
     public final void print(PrintWriter printWriter, Format format, boolean isZip) {
-        String featureLocation = bundleContext.getProperty(SLING_FEATURE_PROPERTY_NAME);
-        URI previousFeatureURI = URI.create(featureLocation);
-        Path previousFeaturePath = Paths.get(previousFeatureURI);
-
-        try (BufferedReader reader = newBufferedReader(previousFeaturePath, UTF_8)) {
-            onFeature(featureLocation, reader, printWriter);
-        } catch (Exception e) {
-            e.printStackTrace(printWriter);
+        try {
+            Feature launchFeature = generator.getLaunchFeature(bundleContext);
+            onLaunchFeature(launchFeature, printWriter);
+        } catch (Throwable t) {
+            t.printStackTrace(printWriter);
         }
         printWriter.println();
     }
 
-    protected abstract void onFeature(String featureLocation, BufferedReader reader, PrintWriter printWriter) throws Exception;
+    protected abstract void onLaunchFeature(Feature launchFeature, PrintWriter printWriter) throws Exception;
 
 }

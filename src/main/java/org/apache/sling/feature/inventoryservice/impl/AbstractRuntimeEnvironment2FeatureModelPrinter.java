@@ -16,26 +16,19 @@
  */
 package org.apache.sling.feature.inventoryservice.impl;
 
-import static org.apache.sling.feature.io.json.FeatureJSONReader.read;
 import static org.apache.sling.feature.io.json.FeatureJSONWriter.write;
 
-import java.io.BufferedReader;
 import java.io.PrintWriter;
 
 import org.apache.sling.feature.ArtifactId;
 import org.apache.sling.feature.Feature;
 import org.apache.sling.feature.r2f.ConversionRequest;
 import org.apache.sling.feature.r2f.DefaultConversionRequest;
-import org.apache.sling.feature.r2f.RuntimeEnvironment2FeatureModel;
 
 abstract class AbstractRuntimeEnvironment2FeatureModelPrinter extends AbstractFeatureInventoryPrinter {
 
-    protected RuntimeEnvironment2FeatureModel generator;
-
     @Override
-    protected void onFeature(String featureLocation, BufferedReader reader, PrintWriter printWriter) throws Exception {
-        Feature launchFeature = read(reader, featureLocation);
-
+    protected void onLaunchFeature(Feature launchFeature, PrintWriter printWriter) throws Exception {
         String groupId = launchFeature.getId().getGroupId();
         String artifactId = launchFeature.getId().getArtifactId();
         String version = launchFeature.getId().getArtifactId();
@@ -44,7 +37,7 @@ abstract class AbstractRuntimeEnvironment2FeatureModelPrinter extends AbstractFe
         ConversionRequest request = new DefaultConversionRequest()
                                     .setBundleContext(bundleContext)
                                     .setResultId(new ArtifactId(groupId, artifactId, version, classifier, null));
-        Feature runtimeFeature = generator.scanAndAssemble(request);
+        Feature runtimeFeature = generator.getRuntimeFeature(request);
 
         Feature computedFeature = compute(launchFeature, runtimeFeature);
 

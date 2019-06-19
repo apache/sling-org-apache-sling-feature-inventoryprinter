@@ -21,11 +21,12 @@ package org.apache.sling.feature.inventoryservice.impl;
 import static org.apache.felix.inventory.InventoryPrinter.FORMAT;
 import static org.apache.felix.inventory.InventoryPrinter.NAME;
 import static org.apache.felix.inventory.InventoryPrinter.TITLE;
+import static org.apache.sling.feature.io.json.FeatureJSONWriter.write;
 
-import java.io.BufferedReader;
 import java.io.PrintWriter;
 
 import org.apache.felix.inventory.InventoryPrinter;
+import org.apache.sling.feature.Feature;
 import org.apache.sling.feature.r2f.RuntimeEnvironment2FeatureModel;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
@@ -51,11 +52,8 @@ public class FeaturesInventoryPrinter extends AbstractFeatureInventoryPrinter {
     }
 
     @Override
-    protected void onFeature(String featureLocation, BufferedReader reader, PrintWriter printWriter) throws Exception {
-        String line = null;
-        while ((line = reader.readLine()) != null) {
-            printWriter.println(line);
-        }
+    protected void onLaunchFeature(Feature launchFeature, PrintWriter printWriter) throws Exception {
+        write(printWriter, launchFeature);
     }
 
 }
