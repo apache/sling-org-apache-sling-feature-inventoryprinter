@@ -44,6 +44,4 @@ abstract class AbstractFeatureInventoryPrinter implements InventoryPrinter {
 
     protected abstract Feature getComputedFeature();
 
-    
-
 }
