@@ -37,11 +37,11 @@ import org.osgi.service.component.annotations.Reference;
         @Reference(field = "generator", name = "generator", service = RuntimeEnvironment2FeatureModel.class)
     }
 )
-public final class RuntimeInventoryPrinter extends AbstractRuntimeEnvironment2FeatureModelPrinter {
+public final class RuntimeInventoryPrinter extends AbstractFeatureInventoryPrinter {
 
     @Override
-    protected Feature compute(Feature previousFeature, Feature currentFeature) {
-        return currentFeature;
+    protected Feature getComputedFeature() {
+        return generator.getRuntimeFeature();
     }
 
 }

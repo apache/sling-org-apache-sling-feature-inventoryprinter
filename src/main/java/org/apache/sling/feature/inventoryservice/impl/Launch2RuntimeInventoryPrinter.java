@@ -19,12 +19,9 @@ package org.apache.sling.feature.inventoryservice.impl;
 import static org.apache.felix.inventory.InventoryPrinter.FORMAT;
 import static org.apache.felix.inventory.InventoryPrinter.NAME;
 import static org.apache.felix.inventory.InventoryPrinter.TITLE;
-import static org.apache.sling.feature.diff.FeatureDiff.compareFeatures;
 
 import org.apache.felix.inventory.InventoryPrinter;
-import org.apache.sling.feature.ArtifactId;
 import org.apache.sling.feature.Feature;
-import org.apache.sling.feature.diff.DiffRequest;
 import org.apache.sling.feature.r2f.RuntimeEnvironment2FeatureModel;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -40,22 +37,11 @@ import org.osgi.service.component.annotations.Reference;
         @Reference(field = "generator", name = "generator", service = RuntimeEnvironment2FeatureModel.class)
     }
 )
-public class Launch2RuntimeInventoryPrinter extends AbstractRuntimeEnvironment2FeatureModelPrinter {
+public class Launch2RuntimeInventoryPrinter extends AbstractFeatureInventoryPrinter {
 
     @Override
-    protected Feature compute(Feature launchFeature, Feature runtimeFeature) {
-        Feature featureDiff = compareFeatures(new DiffRequest()
-                                              .setPrevious(launchFeature)
-                                              .setCurrent(runtimeFeature)
-                                              .addIncludeComparator("bundles")
-                                              .addIncludeComparator("configurations")
-                                              .setResultId(new ArtifactId(runtimeFeature.getId().getGroupId(),
-                                                                          runtimeFeature.getId().getArtifactId(), 
-                                                                          runtimeFeature.getId().getVersion(),
-                                                                          runtimeFeature.getId().getClassifier() + "_updater",
-                                                                          runtimeFeature.getId().getType())));
-
-        return featureDiff;
+    protected Feature getComputedFeature() {
+        return generator.getLaunch2RuntimeUpgradingFeature();
     }
 
 }

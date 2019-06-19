@@ -18,6 +18,8 @@
  */
 package org.apache.sling.feature.inventoryservice.impl;
 
+import static org.apache.sling.feature.io.json.FeatureJSONWriter.write;
+
 import java.io.PrintWriter;
 
 import org.apache.felix.inventory.Format;
@@ -27,20 +29,21 @@ import org.apache.sling.feature.r2f.RuntimeEnvironment2FeatureModel;
 
 abstract class AbstractFeatureInventoryPrinter implements InventoryPrinter {
 
-
     protected RuntimeEnvironment2FeatureModel generator;
 
     @Override
     public final void print(PrintWriter printWriter, Format format, boolean isZip) {
         try {
-            Feature launchFeature = generator.getLaunchFeature();
-            onLaunchFeature(launchFeature, printWriter);
+            Feature computedFeature = getComputedFeature();
+            write(printWriter, computedFeature);
         } catch (Throwable t) {
             t.printStackTrace(printWriter);
         }
         printWriter.println();
     }
 
-    protected abstract void onLaunchFeature(Feature launchFeature, PrintWriter printWriter) throws Exception;
+    protected abstract Feature getComputedFeature();
+
+    
 
 }
