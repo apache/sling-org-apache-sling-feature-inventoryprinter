@@ -29,19 +29,19 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
     service = InventoryPrinter.class,
     property = {
-        NAME + "=feature_runtime",
-        TITLE + "=Sling Feature - Runtime",
+        NAME + "=feature_launch2running",
+        TITLE + "=Sling Feature - Launch 2 Runtime",
         FORMAT + "=JSON"
     },
     reference = {
         @Reference(field = "generator", name = "generator", service = RuntimeEnvironment2FeatureModel.class)
     }
 )
-public final class RuntimeInventoryPrinter extends AbstractFeatureInventoryPrinter {
+public class Launch2RunningInventoryPrinter extends AbstractFeatureInventoryPrinter {
 
     @Override
     protected Feature getComputedFeature() {
-        return generator.getRuntimeFeature();
+        return generator.getLaunch2RunningUpgradingFeature();
     }
 
 }

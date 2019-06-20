@@ -31,8 +31,8 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
     service = InventoryPrinter.class,
     property = {
-        NAME + "=launch_feature",
-        TITLE + "=Sling launch Feature",
+        NAME + "=feature_launch",
+        TITLE + "=Sling Feature - Launch",
         FORMAT + "=JSON"
     },
     reference = {
