@@ -18,32 +18,30 @@
  */
 package org.apache.sling.feature.inventoryservice.impl;
 
-import static org.apache.felix.inventory.InventoryPrinter.FORMAT;
-import static org.apache.felix.inventory.InventoryPrinter.NAME;
-import static org.apache.felix.inventory.InventoryPrinter.TITLE;
+import static org.apache.sling.feature.io.json.FeatureJSONWriter.write;
 
+import java.io.PrintWriter;
+
+import org.apache.felix.inventory.Format;
 import org.apache.felix.inventory.InventoryPrinter;
 import org.apache.sling.feature.Feature;
 import org.apache.sling.feature.r2f.RuntimeEnvironment2FeatureModel;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
-@Component(
-    service = InventoryPrinter.class,
-    property = {
-        NAME + "=feature_launch",
-        TITLE + "=Sling Feature - Launch",
-        FORMAT + "=JSON"
-    },
-    reference = {
-        @Reference(field = "generator", name = "generator", service = RuntimeEnvironment2FeatureModel.class)
-    }
-)
-public class FeaturesInventoryPrinter extends AbstractFeatureInventoryPrinter {
+abstract class AbstractFeatureInventoryPrinter implements InventoryPrinter {
+
+    protected RuntimeEnvironment2FeatureModel generator;
 
     @Override
-    protected Feature getComputedFeature() {
-        return generator.getLaunchFeature();
+    public final void print(PrintWriter printWriter, Format format, boolean isZip) {
+        try {
+            Feature computedFeature = getComputedFeature();
+            write(printWriter, computedFeature);
+        } catch (Throwable t) {
+            t.printStackTrace(printWriter);
+        }
+        printWriter.println();
     }
+
+    protected abstract Feature getComputedFeature();
 
 }
