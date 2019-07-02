@@ -29,15 +29,15 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
     service = InventoryPrinter.class,
     property = {
-        NAME + "=feature_launch2running",
-        TITLE + "=Sling Feature - Launch 2 Runtime",
+        NAME + "=feature_prototype-from-launch",
+        TITLE + "=Sling Feature - Running as Prototype from Launch",
         FORMAT + "=JSON"
     },
     reference = {
         @Reference(field = "generator", name = "generator", service = RuntimeEnvironment2FeatureModel.class)
     }
 )
-public class Launch2RunningInventoryPrinter extends AbstractFeatureInventoryPrinter {
+public class PrototypeFromLaunchInventoryPrinter extends AbstractFeatureInventoryPrinter {
 
     @Override
     protected Feature getComputedFeature() {
