@@ -5,4 +5,12 @@
 # Apache Sling Feature Model Inventory Printer
 
 This bundle registers Inventory Printer services to introspect the feature model at runtime, for example via the Web Console.
-The Inventory Printer API is defined here: https://github.com/apache/felix/blob/trunk/inventory/src/main/java/org/apache/felix/inventory/InventoryPrinter.java
+
+The Apache Felix Inventory Printer API is defined [here](https://github.com/apache/felix/blob/trunk/inventory/src/main/java/org/apache/felix/inventory/InventoryPrinter.java)
+
+This bundle introduces new status reporters`:
+
+ * _Sling Feature - Launch_: the Feature model used to launch the platform (see `/system/console/status-feature_launch.json`);
+ * _Sling Feature - Running_: the Feature model computed by scanning the BundleContext (see `/system/console/status-feature_running.json`);
+ * _Sling Feature - Launch 2 Runtime_: the Feature model which computes the differences between the Launch and Running Features (see `/system/console/status-feature_launch2running.json`);
+ * _Sling Feature - Runtime_: the assembled Feature model from the Launch 2 Runtime (see `/system/console/status-feature_runtime.json`).
