@@ -6,7 +6,7 @@
 
 This bundle registers Inventory Printer services to introspect the feature model at runtime, for example via the Web Console.
 
-The Apache Felix Inventory Printer API is defined [here](https://github.com/apache/felix/blob/trunk/inventory/src/main/java/org/apache/felix/inventory/InventoryPrinter.java)
+The Apache Felix Inventory Printer API is defined [here](https://github.com/apache/felix-dev/blob/master/inventory/src/main/java/org/apache/felix/inventory/InventoryPrinter.java)
 
 This bundle introduces new status reporters`:
 
